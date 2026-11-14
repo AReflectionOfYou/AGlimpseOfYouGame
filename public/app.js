@@ -330,6 +330,20 @@
   $('ngAgain').addEventListener('click', function () { closeModal('newGameModal'); socket.emit('newGame', { mode: 'again' }); });
   $('ngSettings').addEventListener('click', function () { closeModal('newGameModal'); socket.emit('newGame', { mode: 'settings' }); });
 
+  // ---------- about ----------
+  // A plain native dialog: opening and closing never touches game state.
+  var aboutDialog = $('aboutDialog');
+  if (aboutDialog && typeof aboutDialog.showModal === 'function') {
+    Array.prototype.forEach.call(document.querySelectorAll('.about-link'), function (b) {
+      b.addEventListener('click', function () { aboutDialog.showModal(); });
+    });
+    $('aboutClose').addEventListener('click', function () { aboutDialog.close(); });
+    // The dialog has no padding, so a click whose target is the dialog itself is on the backdrop.
+    aboutDialog.addEventListener('click', function (e) { if (e.target === aboutDialog) aboutDialog.close(); });
+  } else {
+    Array.prototype.forEach.call(document.querySelectorAll('.about-row'), function (p) { p.hidden = true; });
+  }
+
   // ---------- toast ----------
   var toastTimer = null;
   function toast(msg) {
