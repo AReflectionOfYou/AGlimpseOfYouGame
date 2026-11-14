@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Glimpse">
+  <meta name="theme-color" content="#2f5d62">
+  <title>A Glimpse of You</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <link rel="icon" href="/icon-192.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar" id="topbar">
+    <div class="brand">A Glimpse of You</div>
+    <div class="status">
+      <span class="up-count hidden" id="upCount"></span>
+      <span class="peer" id="peer"><span class="dot"></span><span class="peer-label">Other player</span></span>
+    </div>
+    <div class="actions">
+      <button class="btn small hidden" id="myFaceBtn">My face</button>
+      <button class="btn small ghost hidden" id="newGameBtn">New Game</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Connecting -->
+    <section class="screen" id="screen-connecting">
+      <div class="panel center">
+        <p class="big">Connecting…</p>
+      </div>
+    </section>
+
+    <!-- Third device -->
+    <section class="screen hidden" id="screen-full">
+      <div class="panel center">
+        <h1>This game already has two players</h1>
+        <p>Only two devices can play at once. To start over with new devices, restart the game on the computer.</p>
+      </div>
+    </section>
+
+    <!-- Join -->
+    <section class="screen hidden" id="screen-lobby">
+      <div class="panel center">
+        <h1>Waiting for the other player</h1>
+        <p>Scan this with the other device's camera:</p>
+        <img class="qr" id="qr" alt="QR code for the join link" width="260" height="260">
+        <p class="url" id="joinUrl"></p>
+        <div class="row">
+          <button class="btn" id="shareBtn" hidden>Share link</button>
+          <a class="btn ghost" id="textLink" hidden>Text the link</a>
+        </div>
+        <p class="note">The other player must be on the same WiFi.</p>
+      </div>
+    </section>
+
+    <!-- Setup -->
+    <section class="screen hidden" id="screen-setup">
+      <div class="panel setup" id="setupPanel">
+        <h2>Pick photos</h2>
+        <div class="choices" id="themeList"></div>
+
+        <h2>How many faces?</h2>
+        <div class="choices" id="countPresets"></div>
+        <div class="stepper">
+          <button class="btn small ghost" id="countDown" aria-label="Fewer">−</button>
+          <span id="countValue">12</span>
+          <button class="btn small ghost" id="countUp" aria-label="More">+</button>
+        </div>
+
+        <h2>Secret faces</h2>
+        <div class="choices" id="modeChoices">
+          <button class="choice" data-mode="random">Random</button>
+          <button class="choice" data-mode="choose">Players choose</button>
+        </div>
+
+        <button class="btn huge" id="dealBtn">Deal</button>
+      </div>
+
+      <div class="panel center hidden" id="noPhotos">
+        <h1>No photos yet</h1>
+        <ol class="steps">
+          <li>Make a folder inside <code>photos/</code> for each theme, like <code>photos/aunties</code>.</li>
+          <li>Put square photos in it, or run <code>npm run prep -- --theme aunties</code>.</li>
+          <li>Tap <b>Check again</b>.</li>
+        </ol>
+        <p>Want to try it first? On the computer, run <code>npm run demo</code> to make sample pictures.</p>
+        <button class="btn" id="recheckBtn">Check again</button>
+      </div>
+    </section>
+
+    <!-- Board (choosing + playing) -->
+    <section class="screen hidden" id="screen-board">
+      <div class="prompt hidden" id="prompt"></div>
+      <div class="board-wrap" id="boardWrap">
+        <div class="board" id="board"></div>
+      </div>
+      <div class="loading hidden" id="loading"><p class="big">Dealing…</p></div>
+    </section>
+  </main>
+
+  <!-- Confirm chosen face -->
+  <div class="modal hidden" id="chooseModal" role="dialog" aria-modal="true">
+    <div class="sheet">
+      <img class="face-large" id="chooseImg" alt="">
+      <div class="row">
+        <button class="btn ghost" id="chooseBack">Back</button>
+        <button class="btn" id="chooseYes">Be this one</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- My face -->
+  <div class="modal hidden" id="myFaceModal" role="dialog" aria-modal="true">
+    <div class="sheet">
+      <p class="label">Your face</p>
+      <img class="face-large" id="myFaceImg" alt="Your secret face">
+      <button class="btn" id="myFaceClose">Hide</button>
+    </div>
+  </div>
+
+  <!-- New game -->
+  <div class="modal hidden" id="newGameModal" role="dialog" aria-modal="true">
+    <div class="sheet">
+      <p class="big">Start a new game? This clears both boards.</p>
+      <div class="stack">
+        <button class="btn" id="ngAgain">Deal again</button>
+        <button class="btn ghost" id="ngSettings">Change settings</button>
+        <button class="btn ghost" id="ngCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/layout.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

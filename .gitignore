@@ -14,3 +14,9 @@ npm-debug.log*
 yarn-error.log*
 dist/
 coverage/
+
+# Photos are never committed. Each family brings their own.
+photos/*
+!photos/README.md
+incoming/
+photos.config.json

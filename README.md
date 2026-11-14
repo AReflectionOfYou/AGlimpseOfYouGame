@@ -1,12 +1,105 @@
 # A Glimpse of You
 
-A two-player photo guessing game played over local Wi-Fi with your own family photos. Ask questions out loud, flip down pictures, find the secret one.
+A two-player picture-guessing game for your home WiFi, played with photos of your own family (and pets). Each player has a secret face. You take turns asking yes/no questions out loud and flip down faces on your own phone or tablet until someone guesses the other's face.
 
-Part of the [A Reflection of You](https://github.com/AReflectionOfYou) collection — tools and games that reflect the people who use them.
+Part of the [A Reflection of You](https://github.com/AReflectionOfYou) collection.
 
-## Status
+## What you need
 
-Early development
+- A computer on your home WiFi to run the game (a Mac laptop works well). iPhones and iPads can't run the server. They join as players.
+- [Node.js](https://nodejs.org/) LTS (version 20 or newer).
+
+```sh
+npm install
+npm run demo     # optional: makes 24 sample pictures so you can try it right away
+npm start
+```
+
+The terminal shows the join address (for example `http://192.168.1.42:3000`), a `.local` address, and a QR code. To use a different port, run `PORT=3001 npm start`.
+
+## How to join
+
+On each phone, tablet, or laptop (same WiFi):
+
+- **Scan the QR code** with the camera, or
+- **Type the address** into Safari, or
+- On the first device, tap **Share link** (or **Text the link**) to send it to the second device.
+
+The first two devices become Player 1 and Player 2. If a device reloads or goes to sleep, it gets its seat, board, and secret face back.
+
+## Playing
+
+1. Either player picks a **theme**, **how many faces** (6 to 24), and **secret faces**: *Random* or *Players choose*. Then taps **Deal**.
+2. Both players see the same faces in the same order. Your flips are private.
+3. Tap a face to flip it down. Tap again to flip it back up.
+4. Tap **My face** to see your secret face. At the end, hold it up to prove your answer.
+5. Guessing is spoken out loud. The app doesn't keep score.
+6. **New Game** deals again with the same settings, or goes back to setup.
+
+## Bring your own photos
+
+This repo has **no photos**, and git is set to ignore everything in `photos/` (except its README) and `incoming/`. Each family adds its own photos on their own computer.
+
+1. Try it first with `npm run demo`.
+2. In Photos on the Mac, select pictures and choose **File → Export → Export N Photos**, Kind = **JPEG**. Save them into this repo's `incoming/` folder.
+3. Run:
+
+   ```sh
+   npm run prep -- --theme aunties
+   ```
+
+   Each photo is turned upright, cropped to a square (it tries to keep faces in the frame), resized to 800×800, and stripped of **all** metadata, including GPS location. The results go into `photos/aunties/`. The originals move to `incoming/done/`.
+4. Refresh the setup screen. "Aunties" shows up as a theme. **Everyone** mixes all themes.
+
+Prep options:
+
+| Option | What it does |
+| --- | --- |
+| `--position center` or `--position top` | Use a different crop if the automatic one cuts off heads |
+| `--file IMG_1234.jpg` | Reprocess just one photo (from `incoming/` or `incoming/done/`) |
+| `--dry-run` | Show what would happen without changing anything |
+
+`.heic` files are converted automatically on a Mac. On other systems, export as JPEG instead.
+
+You can also put your own square `.jpg`, `.png`, or `.webp` files straight into a theme folder. See [photos/README.md](photos/README.md).
+
+### Keeping photos outside the repo
+
+To keep your photos in Dropbox, iCloud Drive, or another folder, either:
+
+```sh
+PHOTOS_DIR=~/Dropbox/glimpse-photos npm start
+```
+
+or create `photos.config.json` (git ignores it) in the repo folder:
+
+```json
+{ "photosDir": "~/Dropbox/glimpse-photos" }
+```
+
+`npm run prep` and `npm run demo` write to the same place.
+
+## Privacy
+
+Your photos stay on your computer and your home network. The game makes no internet requests, uses no outside services or analytics, and never uploads anything. Photos are never committed to git.
+
+## Troubleshooting
+
+- **The other device can't connect.** Both devices must be on the same WiFi network. A guest network usually won't work.
+- **Still can't connect.** Some routers block devices from seeing each other ("client isolation" or "AP isolation"). Turn that off, or use the main network.
+- **macOS asked about incoming connections.** Choose **Allow** for Node. If you clicked Deny, turn it back on in System Settings → Network → Firewall → Options.
+- **The address changes from day to day.** Use the `.local` address shown in the terminal instead (for example `http://mikes-macbook.local:3000`).
+- **A shared link doesn't work for someone away from home.** The link only works on your home WiFi.
+- **No Share button on iPhone or iPad.** iOS only allows the share sheet on secure (https) pages, and this game runs on plain http on your home network. Use the QR code or **Text the link** instead.
+- **"This game already has two players."** Only two devices can play. To switch devices, stop the game on the computer (Ctrl+C) and run `npm start` again.
+
+## Development
+
+```sh
+npm test
+```
+
+Tests use `node:test`. All test images are generated by code. The design is in [SPEC.md](SPEC.md).
 
 ## License
 
