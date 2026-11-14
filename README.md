@@ -9,6 +9,14 @@ Part of the [A Reflection of You](https://github.com/AReflectionOfYou) collectio
 - A computer on your home WiFi to run the game (a Mac laptop works well). iPhones and iPads can't run the server. They join as players.
 - [Node.js](https://nodejs.org/) LTS (version 20 or newer).
 
+## Getting started
+
+1. **Get the game onto your computer.** Either:
+   - On this GitHub page, click the green **Code** button, choose **Download ZIP**, and unzip it (for example into your Documents folder), or
+   - If you use git: `git clone https://github.com/AReflectionOfYou/AGlimpseOfYouGame.git`
+2. **Open Terminal in the game folder.** On a Mac, open Terminal, type `cd ` (with a space), drag the game folder into the Terminal window, and press Return.
+3. **Install and start.** `npm install` is needed only the first time:
+
 ```sh
 npm install
 npm run demo     # optional: makes 24 sample pictures so you can try it right away

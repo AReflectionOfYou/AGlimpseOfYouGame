@@ -244,3 +244,11 @@ Manual testing will be done on real iPhones and iPads.
 - Guess checking, scoring, win tracking, or turn enforcement.
 - More than two players or spectators.
 - Accounts, persistence across server restarts, sounds, animations beyond a simple flip.
+
+## 14. Future work: easier to get started
+
+Revisit this. Today the game needs Node.js, a downloaded copy of the repo, and Terminal commands, so the
+A Reflection of You home page marks it as needing computer setup. Families without that experience can't
+start it on their own. Ideas to explore: a double-click launcher for the Mac (no Terminal), a packaged
+app that bundles Node, or a hosted version with room codes (see the remote-play item in section 13).
+When it gets easier, update the card's `cta` and `note` in the home page's `products.js`.
