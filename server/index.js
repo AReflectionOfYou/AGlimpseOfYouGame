@@ -128,14 +128,19 @@ function createApp({ photosDir = resolvePhotosDir(), port = 3000 } = {}) {
   return { app, server, io, game, urls, joinUrl, photosDir, getThemes };
 }
 
+// Four cards, one showing a face.
 function iconSvg(size) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="#2f5d62"/>
-  <rect x="14" y="14" width="32" height="32" rx="5" fill="#f4d58d"/>
-  <rect x="54" y="14" width="32" height="32" rx="5" fill="#e07a5f"/>
-  <rect x="14" y="54" width="32" height="32" rx="5" fill="#e07a5f"/>
-  <rect x="54" y="54" width="32" height="32" rx="5" fill="#f4d58d"/>
-  <circle cx="70" cy="70" r="7" fill="#2f5d62"/>
+  <defs><clipPath id="card"><rect x="53" y="53" width="33" height="33" rx="6"/></clipPath></defs>
+  <rect width="100" height="100" fill="#f6efe4"/>
+  <rect x="14" y="14" width="33" height="33" rx="6" fill="#2f5d62"/>
+  <rect x="53" y="14" width="33" height="33" rx="6" fill="#2f5d62"/>
+  <rect x="14" y="53" width="33" height="33" rx="6" fill="#2f5d62"/>
+  <g clip-path="url(#card)">
+    <rect x="53" y="53" width="33" height="33" fill="#f4d58d"/>
+    <circle cx="69.5" cy="65.5" r="6.5" fill="#e07a5f"/>
+    <ellipse cx="69.5" cy="86" rx="12.5" ry="11" fill="#e07a5f"/>
+  </g>
 </svg>`;
 }
 
